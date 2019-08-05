@@ -75,6 +75,17 @@ public class SentinelPlugin extends JavaPlugin implements Listener {
     public double maxHealth;
 
     /**
+     * Config option; when a npc should use a healing potion if they have one;
+     */
+
+    public double healPotionHealth;
+
+    /**
+     * Config option; distance a npc can throw a potion
+     */
+    public double potionThrowRange;
+
+    /**
      * Configuration option: maximum duration (in ticks) an NPC can know where a hidden target is.
      */
     public int cleverTicks;
@@ -205,6 +216,8 @@ public class SentinelPlugin extends JavaPlugin implements Listener {
         minShootSpeed = getConfig().getDouble("random.shoot speed minimum", 20);
         workaroundDrops = getConfig().getBoolean("random.workaround drops", false) || blockEvents;
         deathMessages = getConfig().getBoolean("random.death messages", true);
+        healPotionHealth = getConfig().getDouble("random.heal potion health", 8.0);
+        potionThrowRange = getConfig().getDouble("random.potion throw range", 4.75);
         try {
             spectralSound = Sound.valueOf(getConfig().getString("random.spectral sound", "ENTITY_VILLAGER_YES"));
         }

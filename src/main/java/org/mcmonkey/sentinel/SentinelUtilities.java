@@ -12,6 +12,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import org.mcmonkey.sentinel.targeting.SentinelTarget;
@@ -385,5 +387,20 @@ public class SentinelUtilities {
         catch (Exception ex) {
             return null;
         }
+    }
+
+    public static boolean isHarmful(Potion potion) {
+        int bad = 0;
+        int good  = 0;
+        for (PotionEffect effect : potion.getEffects()) {
+            PotionEffectType type = effect.getType();
+            if (type == PotionEffectType.SLOW || type == PotionEffectType.SLOW_DIGGING || type == PotionEffectType.HARM || type == PotionEffectType.CONFUSION || type == PotionEffectType.BLINDNESS || type == PotionEffectType.HUNGER || type == PotionEffectType.WEAKNESS || type == PotionEffectType.POISON || type == PotionEffectType.WITHER)
+                bad++;
+            else
+                good++;
+        }
+
+        return bad > good;
+
     }
 }

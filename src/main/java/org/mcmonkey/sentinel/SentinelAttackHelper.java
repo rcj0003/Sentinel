@@ -190,7 +190,7 @@ public class SentinelAttackHelper extends SentinelHelperObject {
                 return false;
             }
         }
-        else if (itemHelper.usesPotion()) {
+        else if (itemHelper.usesSplashPotion()) {
             if (targetingHelper.canSee(entity)) {
                 if (sentinel.timeSinceAttack < sentinel.attackRateRanged) {
                     if (sentinel.rangedChase) {

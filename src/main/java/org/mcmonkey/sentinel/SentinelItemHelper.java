@@ -3,7 +3,14 @@ package org.mcmonkey.sentinel;
 import net.citizensnpcs.api.trait.trait.Inventory;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.mcmonkey.sentinel.targeting.SentinelTarget;
+
+import java.util.Collection;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Helper for item management.
@@ -216,7 +223,7 @@ public class SentinelItemHelper extends SentinelHelperObject {
                 || usesSnowball()
                 || usesLightning()
                 || usesSpectral()
-                || usesPotion();
+                || usesSplashPotion();
     }
 
     /**
@@ -325,9 +332,35 @@ public class SentinelItemHelper extends SentinelHelperObject {
     /**
      * Returns whether the NPC is using a potion item.
      */
-    public boolean usesPotion() {
+    public boolean usesSplashPotion() {
         ItemStack it = getHeldItem();
-        return it != null && SentinelTarget.POTION_MATERIALS.contains(it.getType());
+
+        if (it != null && SentinelTarget.POTION_MATERIALS.contains(it.getType())) {
+            Potion potion = Potion.fromItemStack(it);
+            if (potion.isSplash()) {
+                return SentinelUtilities.isHarmful(potion);
+            }
+        }
+
+        return false;
+    }
+
+    public boolean usesPotionOnSelf() {
+        ItemStack it = getHeldItem();
+
+        if (it != null && SentinelTarget.POTION_MATERIALS.contains(it.getType())) {
+            Potion potion = Potion.fromItemStack(it);
+
+            if (!SentinelUtilities.isHarmful(potion)) {
+                if (potion.getEffects().stream().anyMatch(potionEffect -> potionEffect.getType() == PotionEffectType.HEAL)) {
+                    return getLivingEntity().getHealth() <= SentinelPlugin.instance.healPotionHealth;
+                } else {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
     }
 
     /**

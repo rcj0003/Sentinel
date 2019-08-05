@@ -2,6 +2,10 @@
 
 # Default settings for a new NPC
 sentinel defaults:
+    #this is in blocks
+    potion throw range: 4.75
+    #When the npc should use a heal potion if they have one
+    heal potion health: 8.0
     # Whether 'close quarters' NPCs should chase targets.
     close chase target: true
     # Whether 'ranged attack' NPCs should chase targets.
@@ -46,6 +50,7 @@ sentinel defaults:
     runaway: false
 
 random:
+
     # How long (in ticks) NPCs should run away for (when hit or told to avoid threats).
     run away time: 1200
     # What sound to play when the "spectral" attack is used.
